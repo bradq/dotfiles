@@ -19,7 +19,7 @@ HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(aws git)
+plugins=(aws docker git)
 
 source $ZSH/oh-my-zsh.sh
 

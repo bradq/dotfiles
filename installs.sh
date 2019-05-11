@@ -1,8 +1,8 @@
+
 #!/bin/bash
 
 set -e
-
-mkdir -p "~/code"
+mkdir -p "${HOME}/code"
 
 # Sudoers
 sudo su -c 'echo "${USER}       ALL=(ALL)	NOPASSWD: ALL " > "/etc/sudoers.d/${USER}"'
@@ -27,6 +27,15 @@ sudo dnf -y install dropbox \
 	zsh \
 	xorg-x11-drv-synaptics
 
+# Docker!
+    sudo dnf config-manager \
+        --add-repo \
+        https://download.docker.com/linux/fedora/docker-ce.repo
+
+    sudo dnf install docker-ce docker-ce-cli containerd.io
+    sudo usermod ${USER} -g docker
+
+
 # Install base pip packages
 sudo pip install -U pip
 pip install awscli --user
@@ -36,8 +45,6 @@ if ! [ -d ~/code/dotfiles ]; then
   git clone https://github.com/bradq/dotfiles.git ~/code/dotfiles
 fi
 
-
-
 # zsh!
 if [[ `echo $0` != "zsh" ]]; then
     chsh -s $(which zsh)
@@ -46,22 +53,14 @@ fi
 # oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-
 # Link dotfiles
-if ! [ -L ~/.zshrc ]; then
-    mv -f ~/.zshrc ~/.zshrc-backup-`date +%s`
-    ln -s ~/code/dotfiles/.zshrc ~/.zshrc
+for i in `ls -a ~/code/dotfiles/dotfiles`; do
+if ! [ -L "$HOME/$i" ]; then
+    test -f "i" && mv -f "$i" "$i"-backup-`date +%s`
+    ln -s ~/code/dotfiles/ ~/.vimrc
 fi
 
-if ! [ -L ~/.vimrc ]; then
-    mv -f ~/.vimrc ~/.vimrc-backup-`date +%s`
-    ln -s ~/code/dotfiles/.vimrc ~/.vimrc
-fi
 
-if ! [ -L ~/.zshrc ]; then
-    mv -f ~/.zshrc ~/.zshrc-backup-`date +%s`
-    ln -s ~/code/dotfiles/.zshrc ~/.zshrc
-fi
 
 # Setup .idea files
 
